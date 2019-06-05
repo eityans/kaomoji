@@ -61,9 +61,9 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                         }
                     }
                 }).then((responses) => {
-                    if (responses[0].queryResult && responses[0].queryResult.action == "emotion-happy"){
+                    if (responses[0].queryResult && responses[0].queryResult.action == "emotion"){
                         let message_text
-                        message_text = '(っ＾ω＾ｃ)♪'
+                        message_text = "(っ＾ω＾ｃ)♪"
                         /*
                         if (responses[0].queryResult.parameters.fields.menu.stringValue){
                             message_text = `毎度！${responses[0].queryResult.parameters.fields.menu.stringValue}ね。どちらにお届けしましょ？`;
