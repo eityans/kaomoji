@@ -50,6 +50,13 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                     text: "(っ＾ω＾ｃ)"
                 }));
             }
+            if (event.message.text == "急性胃腸炎"){
+                // replyMessage()で返信し、そのプロミスをevents_processedに追加。
+                events_processed.push(bot.replyMessage(event.replyToken, {
+                    type: "text",
+                    text: "_:(´ཀ`」 ∠):_"
+                }));
+            }
 
             events_processed.push(
                 session_client.detectIntent({
