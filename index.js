@@ -57,6 +57,13 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                     text: "_:(´ཀ`」 ∠):_"
                 }));
             }
+            if (event.message.text == "カレーさんだよ"){
+                // replyMessage()で返信し、そのプロミスをevents_processedに追加。
+                events_processed.push(bot.replyMessage(event.replyToken, {
+                    type: "text",
+                    text: "(っ🍛＾ω＾🍛ｃ)"
+                }));
+            }
 
             events_processed.push(
                 session_client.detectIntent({
