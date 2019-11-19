@@ -64,6 +64,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                     text: "(っ🍛＾ω＾🍛ｃ)"
                 }));
             }
+            
 
             events_processed.push(
                 session_client.detectIntent({
