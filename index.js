@@ -4,6 +4,26 @@ const server = require("express")();
 const line = require("@line/bot-sdk"); // Messaging APIのSDKをインポート
 const dialogflow = require("dialogflow");
 
+// DBのテスト
+const router = express.Router();
+
+const db = require('./db/db');
+
+router.get('/', (req, res, next) => {
+  db.pool.connect((err, client) => {
+    if (err) {
+      console.log(err);
+    } else {
+      client.query('SELECT name, hands FROM rank', (err, result) => {
+        console.log(result.rows);
+      });
+    }
+  });
+  res.render('index', {
+    title: 'hello express',
+  });
+});
+
 // -----------------------------------------------------------------------------
 // パラメータ設定
 const line_config = {
@@ -64,7 +84,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                     text: "(っ🍛＾ω＾🍛ｃ)"
                 }));
             }
-            
+
 
             events_processed.push(
                 session_client.detectIntent({
