@@ -82,7 +82,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                     if (err) {
                         console.log(err);
                     } else {
-                        client.query('SELECT value FROM kaomoji WHERE `value` = ?', ['急性胃腸炎'], (err, result) => {
+                        client.query("SELECT value FROM kaomoji WHERE 'value' = ?", ['急性胃腸炎'], (err, result) => {
                             console.log("(っ＾ω＾ｃ)");
                             res = result.rows[0].value;
                             console.log("(っ´＾ω＾`ｃ)");
