@@ -54,21 +54,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
     req.body.events.map((event) => {
         // この処理の対象をイベントタイプがメッセージで、かつ、テキストタイプだった場合に限定。
         if (event.type == "message" && event.message.type == "text"){
-            // ユーザーからのテキストメッセージが「こんにちは」だった場合のみ反応。
-            if (event.message.text == "かおもじ"){
-                // replyMessage()で返信し、そのプロミスをevents_processedに追加。
-                events_processed.push(bot.replyMessage(event.replyToken, {
-                    type: "text",
-                    text: "(っ＾ω＾ｃ)"
-                }));
-            }
-            if (event.message.text == "急性胃腸炎"){
-                // replyMessage()で返信し、そのプロミスをevents_processedに追加。
-                events_processed.push(bot.replyMessage(event.replyToken, {
-                    type: "text",
-                    text: "_:(´ཀ`」 ∠):_"
-                }));
-            }
+
             if (event.message.text == "カレーさんだよ"){
                 // replyMessage()で返信し、そのプロミスをevents_processedに追加。
                 events_processed.push(bot.replyMessage(event.replyToken, {
@@ -76,27 +62,26 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                     text: "(っ🍛＾ω＾🍛ｃ)"
                 }));
             }
-            if (event.message.text == "テスト"){
-                var res;
-                db.pool.connect((err, client) => {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        client.query("SELECT value FROM kaomoji WHERE key = $1", ['急性胃腸炎'], (err, result) => {
-                            console.log("(っ＾ω＾ｃ)");
-                            res = result.rows[0].value;
-                            console.log("(っ´＾ω＾`ｃ)");
-                            console.log(res);
-                            events_processed.push(bot.replyMessage(event.replyToken, {
-                                type: "text",
-                                text: res
-                            }));
-                        });
-                    }
-                });
-                
-            }
-
+            
+            
+            db.pool.connect((err, client) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    client.query("SELECT value FROM kaomoji WHERE key = $1", [event.message.text], (err, result) => {
+                        var res;
+                        console.log("(っ＾ω＾ｃ)");
+                        res = result.rows[0].value;
+                        console.log("(っ´＾ω＾`ｃ)");
+                        console.log(res);
+                        events_processed.push(bot.replyMessage(event.replyToken, {
+                            type: "text",
+                            text: res
+                        }));
+                    });
+                }
+            });
+            
 
             events_processed.push(
                 session_client.detectIntent({
