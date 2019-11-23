@@ -86,14 +86,15 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                         console.log("(っ＾ω＾ｃ)");
                         res = result.rows[0].value;
                         console.log("(っ´＾ω＾`ｃ)");
+                        console.log(res);
+                        events_processed.push(bot.replyMessage(event.replyToken, {
+                            type: "text",
+                            text: res
+                        }));
                     });
                     }
                 });
-                console.log(res);
-                events_processed.push(bot.replyMessage(event.replyToken, {
-                    type: "text",
-                    text: res
-                }));
+                
             }
 
 
