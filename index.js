@@ -5,7 +5,7 @@ const line = require("@line/bot-sdk"); // Messaging APIのSDKをインポート
 const dialogflow = require("dialogflow");
 
 // DBのテスト
-const router = express.Router();
+const router = server.Router();
 
 const db = require('./db/db');
 
