@@ -82,7 +82,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                     if (err) {
                     console.log(err);
                     } else {
-                    client.query('SELECT value FROM kaomoji WHERE key = "急性胃腸炎"', (err, result) => {
+                    client.query('SELECT value FROM kaomoji', (err, result) => {
                         res = result.rows[0].value;
                     });
                     }
