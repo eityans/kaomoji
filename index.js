@@ -83,7 +83,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                     console.log(err);
                     } else {
                     client.query('SELECT value FROM kaomohi WHERE key = "急性胃腸炎"', (err, result) => {
-                        res = result.rows;
+                        res = result.rows[0].value;
                     });
                     }
                 });
