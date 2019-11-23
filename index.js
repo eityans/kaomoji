@@ -10,15 +10,7 @@ const router = server;
 const db = require('./db/db');
 
 router.get('/', (req, res, next) => {
-  db.pool.connect((err, client) => {
-    if (err) {
-      console.log(err);
-    } else {
-      client.query('SELECT name, hands FROM rank', (err, result) => {
-        console.log(result.rows);
-      });
-    }
-  });
+  
   res.render('index', {
     title: 'hello express',
   });
@@ -82,6 +74,22 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                 events_processed.push(bot.replyMessage(event.replyToken, {
                     type: "text",
                     text: "(っ🍛＾ω＾🍛ｃ)"
+                }));
+            }
+            if (event.message.text == "テスト"){
+                var res;
+                db.pool.connect((err, client) => {
+                    if (err) {
+                    console.log(err);
+                    } else {
+                    client.query('SELECT value FROM kaomohi WHERE key = "急性胃腸炎"', (err, result) => {
+                        res = result.rows;
+                    });
+                    }
+                });
+                events_processed.push(bot.replyMessage(event.replyToken, {
+                    type: "text",
+                    text: res
                 }));
             }
 
