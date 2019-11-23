@@ -83,6 +83,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                     console.log(err);
                     } else {
                     client.query('SELECT value FROM kaomoji', (err, result) => {
+                        console.log("(っ＾ω＾ｃ)");
                         res = result.rows[0].value;
                     });
                     }
