@@ -68,6 +68,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                 if (err) {
                     console.log(err);
                 } else {
+                    console.log(event.message.text);
                     client.query("SELECT value FROM kaomoji WHERE key = $1", [event.message.text], (err, result) => {
                         var res;
                         if(res != undefined) {
