@@ -70,14 +70,19 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                 } else {
                     client.query("SELECT value FROM kaomoji WHERE key = $1", [event.message.text], (err, result) => {
                         var res;
-                        console.log("(っ＾ω＾ｃ)");
-                        res = result.rows[0].value;
-                        console.log("(っ´＾ω＾`ｃ)");
-                        console.log(res);
-                        events_processed.push(bot.replyMessage(event.replyToken, {
-                            type: "text",
-                            text: res
-                        }));
+                        if(res != undefined) {
+                            console.log("(っ＾ω＾ｃ)");
+                            res = result.rows[0].value;
+                            
+                            console.log(res);
+                            events_processed.push(bot.replyMessage(event.replyToken, {
+                                type: "text",
+                                text: res
+                            }));
+                        } else{
+                            console.log("(っ´＾ω＾`ｃ)");
+                        }
+                        
                     });
                 }
             });
