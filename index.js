@@ -80,18 +80,18 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                 var res;
                 db.pool.connect((err, client) => {
                     if (err) {
-                    console.log(err);
+                        console.log(err);
                     } else {
-                    client.query('SELECT value FROM kaomoji', (err, result) => {
-                        console.log("(っ＾ω＾ｃ)");
-                        res = result.rows[0].value;
-                        console.log("(っ´＾ω＾`ｃ)");
-                        console.log(res);
-                        events_processed.push(bot.replyMessage(event.replyToken, {
-                            type: "text",
-                            text: res
-                        }));
-                    });
+                        client.query('SELECT value FROM kaomoji WHERE `value` = ?', ['急性胃腸炎'], (err, result) => {
+                            console.log("(っ＾ω＾ｃ)");
+                            res = result.rows[0].value;
+                            console.log("(っ´＾ω＾`ｃ)");
+                            console.log(res);
+                            events_processed.push(bot.replyMessage(event.replyToken, {
+                                type: "text",
+                                text: res
+                            }));
+                        });
                     }
                 });
                 
