@@ -53,6 +53,12 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                 }));
             }
 
+            //登録かどうか確認
+            var reg_result = /登録\[(.*),(.*)\]/.exec(event.message.text);
+            console.log(reg_result[1]);
+            console.log(reg_result[2]);
+            
+
             //メッセージをkeyにDBでwhereし、valueを抽出する
             db.pool.connect((err, client) => {
                 if (err) {
