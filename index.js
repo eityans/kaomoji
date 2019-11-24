@@ -43,6 +43,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
     req.body.events.map((event) => {
         // この処理の対象をイベントタイプがメッセージで、かつ、テキストタイプだった場合に限定。
         if (event.type == "message" && event.message.type == "text"){
+            console.log(event.message.text);
              
             //死活確認
             if (event.message.text == "生きてる？"){
