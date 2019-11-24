@@ -80,17 +80,19 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                                     console.log("(っ0ω0ｃ)");
                                     client.query("INSERT INTO Kaomoji (key, value) VALUES ($1, $2);", [key, value], (err, result) => {
                                         if(result != undefined) {
-                                            console.log("(っ＾ω＾ｃ)");
+                                            console.log("(っ登ω録ｃ)try!");
                                             
                                             events_processed.push(bot.replyMessage(event.replyToken, {
                                                 type: "text",
                                                 text: "(っ登ω録ｃ)"
                                             }));
+                                            console.log("(っ登ω録ｃ)");
                                         } else{
                                             console.log("(っ´＾ω＾`ｃ)");
                                         }
                                         
                                     });
+                                    client.on('drain', client.end.bind(client));
                                 }
                             } else{
                                 console.log("(っ´＾ω＾`ｃ)");
