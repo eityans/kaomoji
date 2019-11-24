@@ -58,7 +58,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
             if(reg_result != null){
                 var key = reg_result[1];
                 var value = reg_result[2];
-                db.pool.connect((err, client) => {
+                db.connect((err, client) => {
                 if (err) {
                     console.log(err);
                 } else {
@@ -102,7 +102,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
             }
 
             //メッセージをkeyにDBでwhereし、valueを抽出する
-            db.pool.connect((err, client) => {
+            db.connect((err, client) => {
                 if (err) {
                     console.log(err);
                 } else {
