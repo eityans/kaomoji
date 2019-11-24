@@ -68,11 +68,11 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                 if (err) {
                     console.log(err);
                 } else {
-                    var str = unescape(encodeURIComponent(event.message.text));
-                    console.log(str);
+                    //var str = unescape(encodeURIComponent(event.message.text));
+                    //console.log(str);
                     client.query("SELECT value FROM kaomoji WHERE key = $1", ['急性胃腸炎'], (err, result) => {
                         var res;
-                        if(res != undefined) {
+                        if(result != undefined) {
                             console.log("(っ＾ω＾ｃ)");
                             res = result.rows[0].value;
                             
