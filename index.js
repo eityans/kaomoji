@@ -59,46 +59,47 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                 var key = reg_result[1];
                 var value = reg_result[2];
                 db.pool.connect((err, client) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log(event.message.text);
-                    //重複しているかどうか確認
-                    client.query("SELECT value FROM kaomoji WHERE key = $1", [key], (err, result) => {
-                        var res;
-                        if(result != undefined) {
-                            if(result.rows.length != 0 ){
-                                //重複していたら更新
-                                res = result.rows[0].value;
-                                events_processed.push(bot.replyMessage(event.replyToken, {
-                                    type: "text",
-                                    text: "(っ重ω複ｃ)"
-                                }));
-                            }else {
-                                //重複していなかったら登録
-                                console.log("(っ0ω0ｃ)");
-                                client.query("INSERT INTO Kaomoji (key, value) VALUES ($1, $2);", [key, value], (err, result) => {
-                                    if(result != undefined) {
-                                        console.log("(っ＾ω＾ｃ)");
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log(event.message.text);
+                        //重複しているかどうか確認
+                        client.query("SELECT value FROM kaomoji WHERE key = $1", [key], (err, result) => {
+                            var res;
+                            if(result != undefined) {
+                                if(result.rows.length != 0 ){
+                                    //重複していたら更新
+                                    res = result.rows[0].value;
+                                    events_processed.push(bot.replyMessage(event.replyToken, {
+                                        type: "text",
+                                        text: "(っ重ω複ｃ)"
+                                    }));
+                                }else {
+                                    //重複していなかったら登録
+                                    console.log("(っ0ω0ｃ)");
+                                    client.query("INSERT INTO Kaomoji (key, value) VALUES ($1, $2);", [key, value], (err, result) => {
+                                        if(result != undefined) {
+                                            console.log("(っ＾ω＾ｃ)");
+                                            
+                                            events_processed.push(bot.replyMessage(event.replyToken, {
+                                                type: "text",
+                                                text: "(っ登ω録ｃ)"
+                                            }));
+                                        } else{
+                                            console.log("(っ´＾ω＾`ｃ)");
+                                        }
                                         
-                                        events_processed.push(bot.replyMessage(event.replyToken, {
-                                            type: "text",
-                                            text: "(っ登ω録ｃ)"
-                                        }));
-                                    } else{
-                                        console.log("(っ´＾ω＾`ｃ)");
-                                    }
-                                    
-                                });
+                                    });
+                                }
+                            } else{
+                                console.log("(っ´＾ω＾`ｃ)");
                             }
-                        } else{
-                            console.log("(っ´＾ω＾`ｃ)");
-                        }
+                            
+                        });
                         
-                    });
-                    
-                }
-            });
+                    }
+                });
+                client.on('drain', client.end.bind(client));
             }
 
             //メッセージをkeyにDBでwhereし、valueを抽出する
@@ -128,6 +129,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                         }
                         
                     });
+                    client.on('drain', client.end.bind(client));
                 }
             });
             
