@@ -62,6 +62,8 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                         var res;
                         if(result != undefined) {
                             console.log("(っ＾ω＾ｃ)");
+                            console.log(result);
+                            
                             res = result.rows[0].value;
                             
                             console.log(res);
