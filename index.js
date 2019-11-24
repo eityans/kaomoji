@@ -3,18 +3,7 @@
 const server = require("express")();
 const line = require("@line/bot-sdk"); // Messaging APIのSDKをインポート
 const dialogflow = require("dialogflow");
-
-// DBのテスト
-const router = server;
-
-const db = require('./db/db');
-
-router.get('/', (req, res, next) => {
-  
-  res.render('index', {
-    title: 'hello express',
-  });
-});
+const db = require('./db/db');          // DB
 
 // -----------------------------------------------------------------------------
 // パラメータ設定
@@ -54,22 +43,21 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
     req.body.events.map((event) => {
         // この処理の対象をイベントタイプがメッセージで、かつ、テキストタイプだった場合に限定。
         if (event.type == "message" && event.message.type == "text"){
-
-            if (event.message.text == "カレーさんだよ"){
+             
+            //死活確認
+            if (event.message.text == "生きてる？"){
                 // replyMessage()で返信し、そのプロミスをevents_processedに追加。
                 events_processed.push(bot.replyMessage(event.replyToken, {
                     type: "text",
-                    text: "(っ🍛＾ω＾🍛ｃ)"
+                    text: "٩( 'ω' )و"
                 }));
             }
-            
-            
+
+            //メッセージを引数にDBに接続し、valueを抽出する
             db.pool.connect((err, client) => {
                 if (err) {
                     console.log(err);
                 } else {
-                    //var str = unescape(encodeURIComponent(event.message.text));
-                    //console.log(str);
                     client.query("SELECT value FROM kaomoji WHERE key = $1", [event.message.text], (err, result) => {
                         var res;
                         if(result != undefined) {
