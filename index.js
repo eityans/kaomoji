@@ -96,10 +96,10 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                             }
                             
                         });
-                        
+                        client.on('drain', client.end.bind(client));
                     }
                 });
-                client.on('drain', client.end.bind(client));
+                
             }
 
             //メッセージをkeyにDBでwhereし、valueを抽出する
