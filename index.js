@@ -56,8 +56,28 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
             //登録かどうか確認
             var reg_result = /登録\[(.*),(.*)\]/.exec(event.message.text);
             if(reg_result != null){
-                console.log(reg_result[1]);
-                console.log(reg_result[2]);
+                var key = reg_result[1];
+                var value = reg_result[2];
+                db.pool.connect((err, client) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log(event.message.text);
+                    client.query("INSERT INTO Kaomoji (key, value) VALUES ($1, $2);", [key, value], (err, result) => {
+                        if(result != undefined) {
+                            console.log("(っ＾ω＾ｃ)");
+                            
+                            events_processed.push(bot.replyMessage(event.replyToken, {
+                                type: "text",
+                                text: "(っ登ω録ｃ)"
+                            }));
+                        } else{
+                            console.log("(っ´＾ω＾`ｃ)");
+                        }
+                        
+                    });
+                }
+            });
             }
 
             //メッセージをkeyにDBでwhereし、valueを抽出する
