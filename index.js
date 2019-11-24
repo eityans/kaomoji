@@ -59,9 +59,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                     console.log(err);
                 } else {
                     console.log(event.message.text);
-                    //インジェクション注意
-                    var query = "SELECT value FROM kaomoji WHERE key = '"+event.message.text+"'";
-                    client.query(query, (err, result) => {
+                    client.query("SELECT value FROM kaomoji WHERE key = \'$1\'", [event.message.text], (err, result) => {
                         var res;
                         if(result != undefined) {
                             console.log("(っ＾ω＾ｃ)");
