@@ -112,6 +112,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
             //メッセージをkeyにDBでwhereし、valueを抽出する
             console.log("Try Read(っ＾ω＾ｃ)");
             db.pool.connect((err, client) => {
+                console.log("（っω＾＾ωｃ）in connect");
                 if (err) {
                     console.log('(っ´＾ω＾`ｃ)error during connection', err.stack)
                     console.log(err);
