@@ -61,82 +61,71 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
             if(reg_result != null){
                 var key = reg_result[1];
                 var value = reg_result[2];
-                db.pool.connect((err, client) => {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        console.log(event.message.text);
-                        //重複しているかどうか確認
-                        client.query("SELECT value FROM kaomoji WHERE key = $1", [key], (err, result) => {
-                            var res;
-                            if(result != undefined) {
-                                if(result.rows.length != 0 ){
-                                    //重複していたら更新
-                                    res = result.rows[0].value;
+
+                console.log(event.message.text);
+                //重複しているかどうか確認
+                client.query("SELECT value FROM kaomoji WHERE key = $1", [key], (err, result) => {
+                    var res;
+                    if(result != undefined) {
+                        if(result.rows.length != 0 ){
+                            //重複していたら更新
+                            res = result.rows[0].value;
+                            events_processed.push(bot.replyMessage(event.replyToken, {
+                                type: "text",
+                                text: "(っ重ω複ｃ)"
+                            }));
+                        }else {
+                            //重複していなかったら登録
+                            console.log("(っ0ω0ｃ)");
+                            client.query("INSERT INTO Kaomoji (key, value) VALUES ($1, $2);", [key, value], (err, result) => {
+                                if(result != undefined) {
+                                    console.log("(っ登ω録ｃ)try!");
+                                    
                                     events_processed.push(bot.replyMessage(event.replyToken, {
                                         type: "text",
-                                        text: "(っ重ω複ｃ)"
+                                        text: "(っ登ω録ｃ)"
                                     }));
-                                }else {
-                                    //重複していなかったら登録
-                                    console.log("(っ0ω0ｃ)");
-                                    client.query("INSERT INTO Kaomoji (key, value) VALUES ($1, $2);", [key, value], (err, result) => {
-                                        if(result != undefined) {
-                                            console.log("(っ登ω録ｃ)try!");
-                                            
-                                            events_processed.push(bot.replyMessage(event.replyToken, {
-                                                type: "text",
-                                                text: "(っ登ω録ｃ)"
-                                            }));
-                                            console.log("(っ登ω録ｃ)");
-                                        } else{
-                                            console.log("(っ´＾ω＾`ｃ)");
-                                        }
-                                        
-                                    });
+                                    console.log("(っ登ω録ｃ)");
+                                } else{
+                                    console.log("(っ´＾ω＾`ｃ)");
                                 }
-                            } else{
-                                console.log("(っ´＾ω＾`ｃ)");
-                            }
-                            
-                        });
-                        client.end(err => {
-                            console.log('client has disconnected')
-                            if (err) {
-                                console.log('error during disconnection', err.stack)
-                            }
-                        });
+                                
+                            });
+                        }
+                    } else{
+                        console.log("(っ´＾ω＾`ｃ)");
                     }
+                    
                 });
-                
+        
             }
 
             //メッセージをkeyにDBでwhereし、valueを抽出する
             console.log("Try Read(っ＾ω＾ｃ)");
             
-                    console.log(event.message.text);
-                    console.log("(っ＾ω＾ｃ)DB connect");
-                    client.query("SELECT value FROM kaomoji WHERE key = $1", [event.message.text], (err, result) => {
-                        var res;
-                        if(result != undefined) {
-                            if(result.rows.length != 0 ){
-                                console.log("(っ＾ω＾ｃ)");
-                                
-                                res = result.rows[0].value;
-                                
-                                console.log(res);
-                                events_processed.push(bot.replyMessage(event.replyToken, {
-                                    type: "text",
-                                    text: res
-                                }));
-                            }else {
-                                console.log("(っ0ω0ｃ)");
-                            }
-                        } else{
-                            console.log("(っ´＾ω＾`ｃ)");
-                        }
+            console.log(event.message.text);
+            console.log("(っ＾ω＾ｃ)DB connect");
+            client.query("SELECT value FROM kaomoji WHERE key = $1", [event.message.text], (err, result) => {
+                var res;
+                if(result != undefined) {
+                    if(result.rows.length != 0 ){
+                        console.log("(っ＾ω＾ｃ)");
                         
-                    });
+                        res = result.rows[0].value;
+                        
+                        console.log(res);
+                        events_processed.push(bot.replyMessage(event.replyToken, {
+                            type: "text",
+                            text: res
+                        }));
+                    }else {
+                        console.log("(っ0ω0ｃ)");
+                    }
+                } else{
+                    console.log("(っ´＾ω＾`ｃ)");
+                }
+                
+            });
 
             events_processed.push(
                 session_client.detectIntent({
