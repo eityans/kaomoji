@@ -113,6 +113,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
             console.log("Try Read(っ＾ω＾ｃ)");
             db.pool.connect((err, client) => {
                 if (err) {
+                    console.log('(っ´＾ω＾`ｃ)error during connection', err.stack)
                     console.log(err);
                 } else {
                     console.log(event.message.text);
