@@ -92,14 +92,18 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                                         }
                                         
                                     });
-                                    client.on('drain', client.end.bind(client));
                                 }
                             } else{
                                 console.log("(っ´＾ω＾`ｃ)");
                             }
                             
                         });
-                        client.on('drain', client.end.bind(client));
+                        client.end(err => {
+                            console.log('client has disconnected')
+                            if (err) {
+                                console.log('error during disconnection', err.stack)
+                            }
+                        });
                     }
                 });
                 
@@ -133,7 +137,12 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                         }
                         
                     });
-                    client.on('drain', client.end.bind(client));
+                    client.end(err => {
+                        console.log('client has disconnected')
+                        if (err) {
+                            console.log('error during disconnection', err.stack)
+                        }
+                    });
                 }
             });
             
