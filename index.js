@@ -4,6 +4,8 @@ const server = require("express")();
 const line = require("@line/bot-sdk"); // Messaging APIのSDKをインポート
 const dialogflow = require("dialogflow");
 const db = require('./db/db');          // DB
+var client = db.pool;
+client.connect();
 
 // -----------------------------------------------------------------------------
 // パラメータ設定
@@ -111,12 +113,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
 
             //メッセージをkeyにDBでwhereし、valueを抽出する
             console.log("Try Read(っ＾ω＾ｃ)");
-            db.pool.connect((err, client) => {
-                console.log("（っω＾＾ωｃ）in connect");
-                if (err) {
-                    console.log('(っ´＾ω＾`ｃ)error during connection', err.stack)
-                    console.log(err);
-                } else {
+            
                     console.log(event.message.text);
                     console.log("(っ＾ω＾ｃ)DB connect");
                     client.query("SELECT value FROM kaomoji WHERE key = $1", [event.message.text], (err, result) => {
@@ -140,15 +137,6 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                         }
                         
                     });
-                    client.end(err => {
-                        console.log('client has disconnected')
-                        if (err) {
-                            console.log('error during disconnection', err.stack)
-                        }
-                    });
-                }
-            });
-            
 
             events_processed.push(
                 session_client.detectIntent({
