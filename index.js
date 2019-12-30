@@ -92,7 +92,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                     if(result.rows.length != 0 ){
                         console.log("(っ＾ω＾ｃ)");
                         
-                        res = result.rows[Math.floor(Math.random() * array.length)].value;
+                        res = result.rows[Math.floor(Math.random() * result.rows.length)].value;
                         
                         console.log(res);
                         events_processed.push(bot.replyMessage(event.replyToken, {
