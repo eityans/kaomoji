@@ -57,7 +57,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
             }
 
             //登録
-            var reg_result = /登録\[([^,]*),(.*)\]/.exec(event.message.text);
+            var reg_result = /登録\[([^,]*),([\s\S]*)\]/.exec(event.message.text);
             if(reg_result != null){
                 var key = reg_result[1];
                 var value = reg_result[2];
