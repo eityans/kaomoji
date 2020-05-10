@@ -74,7 +74,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                 var group_id = event.source.groupId;
                 var user_id = event.source.userId;
                 var room_id = event.source.roomId;
-                client.leaveGroup(group_id)
+                bot.leaveGroup(group_id)
                     .then(() => {
                         
                     })
