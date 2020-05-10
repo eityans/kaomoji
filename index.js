@@ -56,6 +56,18 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                 }));
             }
 
+            //group_id確認
+            if (event.message.text == "info"){
+                // replyMessage()で返信し、そのプロミスをevents_processedに追加。
+                var group_id = event.source.groupId;
+                var user_id = event.source.userId;
+                var room_id = event.source.roomId;
+                events_processed.push(bot.replyMessage(event.replyToken, {
+                    type: "text",
+                    text: "user_id: "+user_id+" group_id: "+group_id+" room_id: "+room_id
+                }));
+            }
+
             //登録
             var reg_result = /登録\[([^,]*),([\s\S]*)\]/.exec(event.message.text);
             if(reg_result != null){
