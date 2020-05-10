@@ -68,6 +68,21 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                 }));
             }
 
+            //leave
+            if (event.message.text == "leave"){
+                // replyMessage()で返信し、そのプロミスをevents_processedに追加。
+                var group_id = event.source.groupId;
+                var user_id = event.source.userId;
+                var room_id = event.source.roomId;
+                client.leaveGroup(group_id)
+                    .then(() => {
+                        
+                    })
+                    .catch((err) => {
+                        // error handling
+                });
+            }
+
             //登録
             var reg_result = /登録\[([^,]*),([\s\S]*)\]/.exec(event.message.text);
             if(reg_result != null){
