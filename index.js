@@ -5,9 +5,8 @@ const line = require("@line/bot-sdk"); // Messaging APIのSDKをインポート
 const dialogflow = require("dialogflow");
 const db = require('./db/db');          // DB
 var client = db.pool;
-client.connect((e, c) => {
-    console.log("connected （っω＾＾ωｃ）")
-});
+console.log(client.connect);
+
 
 // -----------------------------------------------------------------------------
 // パラメータ設定
