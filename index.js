@@ -15,6 +15,8 @@ async function clientDemo() {
     return now;
 }
 
+await clientDemo();
+
 // -----------------------------------------------------------------------------
 // パラメータ設定
 const line_config = {
@@ -97,7 +99,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                 var key = reg_result[1];
                 var value = reg_result[2];
                 console.log("-----------------");
-                await clientDemo();
+
                 try {
                     console.log("query");
                     client.query(
