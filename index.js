@@ -90,8 +90,10 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
             if(reg_result != null){
                 var key = reg_result[1];
                 var value = reg_result[2];
-                console.log("-----------------")
+                console.log("-----------------");
                 try {
+                    console.log("query");
+                    nonExistentFunction();
                     client.query("INSERT INTO Kaomoji (key, value) VALUES ($1, $2);", [key, value], (err, result) => {
                         console.log("try insert")
                         if(result != undefined) {
@@ -112,7 +114,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                     console.log(e);
                     console.error(e);
                 }
-                console.log("-----------------")
+                console.log("-----------------");
 
             }
 
