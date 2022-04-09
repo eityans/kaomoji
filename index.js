@@ -10,7 +10,9 @@ client.connect();
 async function clientDemo() {
     console.log("run");
     await client.connect();
+    console.log("connect")
     const now = await client.query("SELECT NOW()");
+    console.log("query");
     await client.end();
     console.log("end");
     return now;
