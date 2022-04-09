@@ -8,14 +8,15 @@ var client = db.pool;
 client.connect();
 
 async function clientDemo() {
+    console.log("run");
     await client.connect();
     const now = await client.query("SELECT NOW()");
     await client.end();
-    console.log("run");
+    console.log("end");
     return now;
 }
 
-await clientDemo();
+clientDemo();
 
 // -----------------------------------------------------------------------------
 // パラメータ設定
