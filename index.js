@@ -5,7 +5,9 @@ const line = require("@line/bot-sdk"); // Messaging APIのSDKをインポート
 const dialogflow = require("dialogflow");
 const db = require('./db/db');          // DB
 var client = db.pool;
-client.connect();
+client.connect((e, c) => {
+    console.log("connected （っω＾＾ωｃ）")
+});
 
 // -----------------------------------------------------------------------------
 // パラメータ設定
@@ -46,7 +48,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
         // この処理の対象をイベントタイプがメッセージで、かつ、テキストタイプだった場合に限定。
         if (event.type == "message" && event.message.type == "text"){
             console.log(event.message.text);
-             
+
             //死活確認
             if (event.message.text == "生きてる？"){
                 // replyMessage()で返信し、そのプロミスをevents_processedに追加。
@@ -76,7 +78,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                 var room_id = event.source.roomId;
                 bot.leaveGroup(group_id)
                     .then(() => {
-                        
+
                     })
                     .catch((err) => {
                         // error handling
@@ -90,11 +92,11 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                 var value = reg_result[2];
 
                 console.log(event.message.text);
-                
+
                 client.query("INSERT INTO Kaomoji (key, value) VALUES ($1, $2);", [key, value], (err, result) => {
                     if(result != undefined) {
                         console.log("(っ登ω録ｃ)try!");
-                        
+
                         events_processed.push(bot.replyMessage(event.replyToken, {
                             type: "text",
                             text: "(っ登ω録ｃ)"
@@ -103,14 +105,14 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                     } else{
                         console.log("(っ´＾ω＾`ｃ)");
                     }
-                    
+
                 });
-        
+
             }
 
             //メッセージをkeyにDBでwhereし、valueを抽出する
             console.log("Try Read(っ＾ω＾ｃ)");
-            
+
             console.log(event.message.text);
             console.log("(っ＾ω＾ｃ)DB connect");
             client.query("SELECT value FROM kaomoji WHERE key = $1", [event.message.text], (err, result) => {
@@ -118,9 +120,9 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                 if(result != undefined) {
                     if(result.rows.length != 0 ){
                         console.log("(っ＾ω＾ｃ)");
-                        
+
                         res = result.rows[Math.floor(Math.random() * result.rows.length)].value;
-                        
+
                         console.log(res);
                         events_processed.push(bot.replyMessage(event.replyToken, {
                             type: "text",
@@ -132,7 +134,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                 } else{
                     console.log("(っ´＾ω＾`ｃ)");
                 }
-                
+
             });
 
             events_processed.push(
