@@ -91,22 +91,29 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                 var key = reg_result[1];
                 var value = reg_result[2];
 
-                console.log(event.message.text);
+                console.log(client);
 
-                client.query("INSERT INTO Kaomoji (key, value) VALUES ($1, $2);", [key, value], (err, result) => {
-                    if(result != undefined) {
-                        console.log("(っ登ω録ｃ)try!");
+                try {
+                    client.query("INSERT INTO Kaomoji (key, value) VALUES ($1, $2);", [key, value], (err, result) => {
+                        console.log("try insert")
+                        if(result != undefined) {
+                            console.log("(っ登ω録ｃ)try!");
 
-                        events_processed.push(bot.replyMessage(event.replyToken, {
-                            type: "text",
-                            text: "(っ登ω録ｃ)"
-                        }));
-                        console.log("(っ登ω録ｃ)");
-                    } else{
-                        console.log("(っ´＾ω＾`ｃ)");
-                    }
+                            events_processed.push(bot.replyMessage(event.replyToken, {
+                                type: "text",
+                                text: "(っ登ω録ｃ)"
+                            }));
+                            console.log("(っ登ω録ｃ)");
+                        } else{
+                            console.log("(っ´＾ω＾`ｃ)");
+                        }
 
-                });
+                    });
+
+                } catch (e) {
+                    console.log(e);
+                    console.error(e);
+                }
 
             }
 
