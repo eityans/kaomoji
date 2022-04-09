@@ -7,6 +7,13 @@ const db = require('./db/db');          // DB
 var client = db.pool;
 client.connect();
 
+async function clientDemo() {
+    await client.connect();
+    const now = await client.query("SELECT NOW()");
+    await client.end();
+    console.log("run");
+    return now;
+}
 
 // -----------------------------------------------------------------------------
 // パラメータ設定
@@ -90,6 +97,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                 var key = reg_result[1];
                 var value = reg_result[2];
                 console.log("-----------------");
+                clientDemo();
                 try {
                     console.log("query");
                     client.query(
