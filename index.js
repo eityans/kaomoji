@@ -97,7 +97,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                 var key = reg_result[1];
                 var value = reg_result[2];
                 console.log("-----------------");
-                clientDemo();
+                await clientDemo();
                 try {
                     console.log("query");
                     client.query(
